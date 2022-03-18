@@ -2,7 +2,8 @@
     randomWallpaper
 '''
 from os import listdir,system
-from os.path import realpath,join,exists
+from os.path import realpath,join,exists,dirname
+from sys import executable
 from random import choice
 import argparse,json
 
@@ -23,17 +24,18 @@ class Config():
     about config.json
     '''
     def __init__(self):
+        self.configPath = join(dirname(executable),'config.json')
         self.config = {"WallpaperDir":[]}
-        if not exists('./config.json'):
+        if not exists(self.configPath):
             self.saveConfig()
         self.readConfig()
 
     def readConfig(self):
-        with open('./config.json','r',encoding='utf-8') as f:
+        with open(self.configPath,'r',encoding='utf-8') as f:
             self.config = json.loads(f.read())
 
     def saveConfig(self):
-        with open('./config.json','w',encoding='utf-8') as f:
+        with open(self.configPath,'w',encoding='utf-8') as f:
             f.write(json.dumps(self.config))
 
     def addFolder(self,FolderList:list):
