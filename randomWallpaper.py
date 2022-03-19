@@ -3,6 +3,7 @@
 '''
 from os import listdir,system
 from os.path import realpath,join,exists,dirname
+from getpass import getuser
 from sys import executable
 from random import choice
 import argparse,json
@@ -59,7 +60,6 @@ class Config():
     def getFolderList(self):
         return self.config['WallpaperDir']
 
-
 class ConsoleConfig():
     def __init__(self,config):
         self.config = config
@@ -70,6 +70,7 @@ class ConsoleConfig():
         print('-' * 51)
         print('a. add random folder')
         print('c. clean folder')
+        print('de. create .desktop ~/.local/share/applications/')
         print('d. delete random folder')
         print('i. show info')
         print('l. show folder list')
@@ -91,6 +92,8 @@ class ConsoleConfig():
                 self.addFolder()
             elif mode == 'd':
                 self.deleteFolder()
+            elif mode == 'de':
+                createWallpaper()
             elif mode == 'l':
                 self.showFolderList()
             elif mode == 'r':
@@ -128,7 +131,6 @@ class ConsoleConfig():
         print(info)
         print('-' * 51)
 
-
 def setWallpaperByDir(dirPath):
     img = choice(dirPath)           # random.choice
     print(f'set Wallpaper path:{img}')
@@ -156,6 +158,18 @@ def readWallpaperList():
         for filePath in listdir(dirPath):
             WallpaperList.append(realpath(join(dirPath, filePath)))
 
+def createWallpaper():
+    txt = f"""[Desktop Entry]
+Type=Application
+Exec={executable}
+Name=randomWallpaper
+GenericName=A sample Wallpaper,
+Icon={join(dirname(executable),'randomWallpaper_logo')}
+Terminal=false
+Categories=Wallpaper;python;"""
+    with open(f'/home/{getuser()}/.local/share/applications/randomWallpaper.desktop','w',encoding='utf-8') as f:
+        f.write(txt)
+
 if __name__ == '__main__':
     parser = argparse.ArgumentParser(description=info)
     group = parser.add_mutually_exclusive_group()
@@ -163,6 +177,7 @@ if __name__ == '__main__':
     group.add_argument('-c', '--config', action='store_true', dest='config', default=False, help='config by console')
     group.add_argument('-a','--add',dest='add',nargs='+',help='add folders')
     group.add_argument('-d', '--delete', nargs='+', dest='delete', help='delete folders')
+    group.add_argument('--desktop',action='store_true',dest='desktop',default=False,help='create .desktop file')
     group.add_argument('-n', '--clean', action='store_true', dest='clean', default=False, help='clean Folders')
     group.add_argument('-v', '--version', action='store_true', dest='version', default=False, help='Version')
     group.add_argument('-l', '--list', action='store_true', dest='list', default=False, help='show folder list')
@@ -171,7 +186,7 @@ if __name__ == '__main__':
     config = Config()
     CC = ConsoleConfig(config)
 
-    if not any(i for i in [args.config,args.add,args.delete,args.clean,args.version,args.list]):
+    if not any(i for i in [args.config,args.add,args.delete,args.clean,args.version,args.list,args.desktop]):
         args.run = True
 
     if args.run:
@@ -199,3 +214,6 @@ if __name__ == '__main__':
 
     if args.version:
         print(version)
+
+    if args.desktop:
+        createWallpaper()
