@@ -19,8 +19,7 @@ DISPLAY=:0 GSETTINGS_BACKEND=dconf gsettings set org.gnome.desktop.background pi
 
 ## install
 I use pyinstaller to pack it on Ubuntu20.04 x64.
-you can download file from release,
-run install.sh. it will copy executable file to ~/.local/bin/ and create randomWallpaper.desktop file to ~/.local/share/applications/
+you can download file from release,unzip and run `install.sh`. it will copy executable file to `~/.local/bin/` and create randomWallpaper.desktop file to `~/.local/share/applications/`
 
 or clone this repositories use python3 or pack it.
 
@@ -30,24 +29,31 @@ code use the python3 standard library.
 ## how to use
 run it without arguments. program will run as config.json.
 
+Although the program supports running all the time and switching wallpapers at intervals, I recommend using `cron` in linux.
+
 ### argments
-``-r,--run``, run with config.json
 
-``-c,--config``,  config it by console
+`-a,--add`, add folder which program choose in when it run. split by ',' or space
 
-``-a,--add``, add folder which program choose in when it run. split by ',' or space
+`-c,--config`,  config it by console
 
-``-d,--delete``, delete wallpaper folder,split by ',' or space.
+`-d,--delete`, delete wallpaper folder,split by ',' or space.
 
-``--desktop``, create randomWallpaper.desktop to ~/.local/share/applications
+`--desktop`, create randomWallpaper.desktop to ~/.local/share/applications
 
-``-n,--clean``,clean wallpaper folder
+`-h,--help`, show help
 
-``-v,--version``, version
+`-k,--keep`,run and keep not quit,change Wallpaper by 'keep-time'(s) in config.json,
 
-``-l,--list``, print forder list
+`-l,--list`, print forder list
 
-``-h,--help``, show help
+`-n,--clean`,clean wallpaper folder
+
+`-q,--quit`, quit,only in use `-k,--keep` need it
+
+`-r,--run`, run with config.json
+
+`-v,--version`, version
 
 ## License
 MIT,Thanks!

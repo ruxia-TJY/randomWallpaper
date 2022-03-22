@@ -7,12 +7,13 @@ from getpass import getuser
 from sys import executable
 from random import choice
 import argparse,json
-
+import time
 
 # Wallpaper List,set it when read Wallpaper Folder
 WallpaperList = []
 
-version = '0.0.1'
+version = '0.0.2'
+
 info = """\tA sample Wallpaper.Writed by Python. run in
 gnome. Use command gsettings when it run.
 Open Source in Github with MIT License:
@@ -26,7 +27,7 @@ class Config():
     '''
     def __init__(self):
         self.configPath = join(dirname(executable),'config.json')
-        self.config = {"WallpaperDir":[]}
+        self.config = {"WallpaperDir":[],"keep-time":3,"keep-flag":True}
         if not exists(self.configPath):
             self.saveConfig()
         self.readConfig()
@@ -155,6 +156,7 @@ def readWallpaperList():
     for dirPath in config.getFolderList():
         if not exists(dirPath):
             continue
+
         for filePath in listdir(dirPath):
             WallpaperList.append(realpath(join(dirPath, filePath)))
 
@@ -173,24 +175,40 @@ Categories=Wallpaper;python;"""
 if __name__ == '__main__':
     parser = argparse.ArgumentParser(description=info)
     group = parser.add_mutually_exclusive_group()
-    group.add_argument('-r', '--run', action='store_true', dest='run', default=False, help='run as config.json')
+    group.add_argument('-a', '--add', dest='add', nargs='+', help='add folders')
     group.add_argument('-c', '--config', action='store_true', dest='config', default=False, help='config by console')
-    group.add_argument('-a','--add',dest='add',nargs='+',help='add folders')
     group.add_argument('-d', '--delete', nargs='+', dest='delete', help='delete folders')
-    group.add_argument('--desktop',action='store_true',dest='desktop',default=False,help='create .desktop file')
-    group.add_argument('-n', '--clean', action='store_true', dest='clean', default=False, help='clean Folders')
-    group.add_argument('-v', '--version', action='store_true', dest='version', default=False, help='Version')
+    group.add_argument('--desktop', action='store_true', dest='desktop', default=False, help='create .desktop file')
+    group.add_argument('-k', '--keep', action='store_true', dest='keep', default=False, help="run and keep not quit")
     group.add_argument('-l', '--list', action='store_true', dest='list', default=False, help='show folder list')
+    group.add_argument('-n', '--clean', action='store_true', dest='clean', default=False, help='clean Folders')
+    group.add_argument('-q', '--quit', action='store_true', dest='quit', default=False, help='quit')
+    group.add_argument('-r', '--run', action='store_true', dest='run', default=False, help='run as config.json')
+    group.add_argument('-v', '--version', action='store_true', dest='version', default=False, help='Version')
 
     args = parser.parse_args()
     config = Config()
     CC = ConsoleConfig(config)
 
-    if not any(i for i in [args.config,args.add,args.delete,args.clean,args.version,args.list,args.desktop]):
+    if not any(i for i in [args.add,args.delete,args.config,args.clean,args.version,args.list,args.desktop,args.keep,args.quit]):
         args.run = True
 
     if args.run:
         setWallpaperByWallpaperLst()
+
+    if args.keep:
+        config.config['keep-flag'] = True;
+        config.saveConfig()
+        while True:
+            setWallpaperByWallpaperLst()
+            time.sleep(config.config['keep-time'])
+            config.readConfig()
+            if not config.config['keep-flag']:
+                break
+
+    if args.quit:
+        config.config['keep-flag'] = False
+        config.saveConfig()
 
     if args.config:
         CC.run()
