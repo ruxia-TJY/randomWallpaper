@@ -186,7 +186,7 @@ Categories=Wallpaper;python;"""
         with open(f'/home/{getuser()}/.local/share/applications/randomWallpaper.desktop','w',encoding='utf-8') as f:
             f.write(txt)
     elif platsystem == 'windows':
-        print('windows')
+        print('not support!')
 
 if __name__ == '__main__':
     parser = argparse.ArgumentParser(description=info)
