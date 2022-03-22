@@ -9,19 +9,21 @@ from random import choice
 import argparse,json
 import time
 from platform import system as platform_system
-from win32api import RegOpenKeyEx,RegSetValueEx
-from win32gui import SystemParametersInfo
-from win32con import SPI_SETDESKWALLPAPER,SPIF_SENDWININICHANGE,REG_SZ,KEY_SET_VALUE,HKEY_CURRENT_USER
+
+platsystem = platform_system().lower()
+
+if platsystem == 'windows':
+    from win32api import RegOpenKeyEx,RegSetValueEx
+    from win32gui import SystemParametersInfo
+    from win32con import SPI_SETDESKWALLPAPER,SPIF_SENDWININICHANGE,REG_SZ,KEY_SET_VALUE,HKEY_CURRENT_USER
 
 # Wallpaper List,set it when read Wallpaper Folder
 WallpaperList = []
 
 version = '0.0.2'
 
-platsystem = platform_system().lower()
-
-info = """\tA sample Wallpaper.Writed by Python. run in
-gnome. Use command gsettings when it run.
+info = f"""\tA sample Wallpaper.Writed by Python. run in
+gnome/Windows.version:{version}
 Open Source in Github with MIT License:
 https://github.com/ruxia-TJY/randomWallpaper
 

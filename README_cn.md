@@ -11,12 +11,17 @@
 从文件夹列表中随机选择一张图片作为壁纸。
 
 ## 安装
-我在Ubuntu20.04 x64环境下使用Pyinstaller打包。
-你可以直接从release界面下载，解压并运行install.sh，会将文件复制到`~/.local/bin`文件夹下，在`~/.local/share/applications`文件夹下创建randomWallpaper.desktop文件
 
-或者直接clone本仓库，使用python3运行或者自己打包。
+### clone
+直接clone本仓库，使用python3运行或者自己打包。
 
-代码仅使用Python3标准库
+*注意：* 在Windows下需要根据requirements.txt安装需要的包。
+
+### release的可执行文件
+
+我仅在Ubuntu20.04 x64环境下使用Pyinstaller进行了打包。
+您可以下载，解压并运行install.sh，程序会将文件复制到`~/.local/bin`文件夹下，在`~/.local/share/applications`文件夹下创建randomWallpaper.desktop文件
+
 
 ## 使用
 
