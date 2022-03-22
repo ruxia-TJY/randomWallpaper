@@ -4,18 +4,12 @@
 
 [![](https://img.shields.io/badge/language-Python3-blue)](https://www.python.org/) 
 ![GitHub code size in bytes](https://img.shields.io/github/languages/code-size/ruxia-TJY/randomWallpaper) 
-![linux](https://img.shields.io/badge/-ubuntu-yellow?logo=ubuntu)  
+![linux](https://img.shields.io/badge/-ubuntu-yellow?logo=ubuntu)
+![Windows](https://img.shields.io/badge/-windws-blue?logo=windows)
 ![License](https://img.shields.io/badge/License-MIT-blue)
 
 
-
 Randomly select a picture from the folder list as wallpaper.
-
-I use this command:
-
-```shell
-DISPLAY=:0 GSETTINGS_BACKEND=dconf gsettings set org.gnome.desktop.background picture-uri  'file://image-path'
-```
 
 ## install
 I use pyinstaller to pack it on Ubuntu20.04 x64.
@@ -24,7 +18,6 @@ you can download file from release,unzip and run `install.sh`. it will copy exec
 or clone this repositories use python3 or pack it.
 
 code use the python3 standard library.
-
 
 ## how to use
 run it without arguments. program will run as config.json.

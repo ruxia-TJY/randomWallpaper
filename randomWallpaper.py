@@ -8,11 +8,17 @@ from sys import executable
 from random import choice
 import argparse,json
 import time
+from platform import system as platform_system
+from win32api import RegOpenKeyEx,RegSetValueEx
+from win32gui import SystemParametersInfo
+from win32con import SPI_SETDESKWALLPAPER,SPIF_SENDWININICHANGE,REG_SZ,KEY_SET_VALUE,HKEY_CURRENT_USER
 
 # Wallpaper List,set it when read Wallpaper Folder
 WallpaperList = []
 
 version = '0.0.2'
+
+platsystem = platform_system().lower()
 
 info = """\tA sample Wallpaper.Writed by Python. run in
 gnome. Use command gsettings when it run.
@@ -135,8 +141,14 @@ class ConsoleConfig():
 def setWallpaperByDir(dirPath):
     img = choice(dirPath)           # random.choice
     print(f'set Wallpaper path:{img}')
-    # os.system
-    system(f"DISPLAY=:0 GSETTINGS_BACKEND=dconf gsettings set org.gnome.desktop.background picture-uri  'file://{img}'")
+    if platsystem == 'linux':
+        # os.system
+        system(f"DISPLAY=:0 GSETTINGS_BACKEND=dconf gsettings set org.gnome.desktop.background picture-uri  'file://{img}'")
+    elif platsystem == 'windows':
+        regKey = RegOpenKeyEx(HKEY_CURRENT_USER,"Control Panel\\Desktop",0,KEY_SET_VALUE)
+        RegSetValueEx(regKey,"WallpaperStyle",0,REG_SZ,"2")
+        RegSetValueEx(regKey,"TileWallpaper",0,REG_SZ,"0")
+        SystemParametersInfo(SPI_SETDESKWALLPAPER,img,SPIF_SENDWININICHANGE)
 
 def setWallpaperByWallpaperLst():
     global WallpaperList
@@ -161,7 +173,9 @@ def readWallpaperList():
             WallpaperList.append(realpath(join(dirPath, filePath)))
 
 def createWallpaper():
-    txt = f"""[Desktop Entry]
+    global platsystem
+    if platsystem == 'linux':
+        txt = f"""[Desktop Entry]
 Type=Application
 Exec={executable}
 Name=randomWallpaper
@@ -169,8 +183,10 @@ GenericName=A sample Wallpaper,
 Icon={join(dirname(executable),'randomWallpaper_logo')}
 Terminal=false
 Categories=Wallpaper;python;"""
-    with open(f'/home/{getuser()}/.local/share/applications/randomWallpaper.desktop','w',encoding='utf-8') as f:
-        f.write(txt)
+        with open(f'/home/{getuser()}/.local/share/applications/randomWallpaper.desktop','w',encoding='utf-8') as f:
+            f.write(txt)
+    elif platsystem == 'windows':
+        print('windows')
 
 if __name__ == '__main__':
     parser = argparse.ArgumentParser(description=info)

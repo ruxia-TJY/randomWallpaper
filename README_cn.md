@@ -4,15 +4,11 @@
 
 [![](https://img.shields.io/badge/language-Python3-blue)](https://www.python.org/) 
 ![GitHub code size in bytes](https://img.shields.io/github/languages/code-size/ruxia-TJY/randomWallpaper) 
-![linux](https://img.shields.io/badge/-ubuntu-yellow?logo=ubuntu)  
+![linux](https://img.shields.io/badge/-ubuntu-yellow?logo=ubuntu)
+![Windows](https://img.shields.io/badge/-windws-blue?logo=windows)
 ![License](https://img.shields.io/badge/License-MIT-blue)
 
 从文件夹列表中随机选择一张图片作为壁纸。
-
-主要使用的命令
-```shell
-DISPLAY=:0 GSETTINGS_BACKEND=dconf gsettings set org.gnome.desktop.background picture-uri  'file://image-path'
-```
 
 ## 安装
 我在Ubuntu20.04 x64环境下使用Pyinstaller打包。
@@ -20,7 +16,7 @@ DISPLAY=:0 GSETTINGS_BACKEND=dconf gsettings set org.gnome.desktop.background pi
 
 或者直接clone本仓库，使用python3运行或者自己打包。
 
-本代码使用标准库
+代码仅使用Python3标准库
 
 ## 使用
 
